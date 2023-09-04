@@ -11,6 +11,7 @@ import {styles} from './styles';
 import {roomList, tipList} from './data';
 import ButtonGlobal from '@app/src/components/globals/ButtonGlobal';
 import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
+import {EBottomTabName} from '@app/src/navigation/type';
 
 function OrderScreen() {
   const {params} = useRoute<RouteProp<AppRootParamList, 'OrderScreen'>>();
@@ -21,7 +22,7 @@ function OrderScreen() {
   const [tipId, setTipId] = useState<number>();
 
   const handleOrder = () => {
-    navigationReset('ListFoodScreen');
+    navigationReset(EBottomTabName.HomeScreen);
   };
 
   return (

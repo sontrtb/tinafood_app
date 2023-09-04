@@ -2,11 +2,26 @@ import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AppNavigation from './src/navigation';
 
+import {store} from '@app/src/redux/store';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {persistor} from '@app/src/redux/store';
+
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 function App(): JSX.Element {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <AppNavigation />
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <PersistGate loading={null} persistor={persistor}>
+          <GestureHandlerRootView style={{flex: 1}}>
+            <AppNavigation />
+          </GestureHandlerRootView>
+        </PersistGate>
+      </QueryClientProvider>
+    </Provider>
   );
 }
 

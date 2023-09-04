@@ -14,12 +14,15 @@ import BackgroundCard from './components/BackgroundCard';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Countdown from './components/Countdown';
 import Animated, {BounceIn, BounceOut} from 'react-native-reanimated';
+import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
 
 const image = {
   uri: 'https://haycafe.vn/wp-content/uploads/2022/02/Anh-gai-xinh-de-thuong-577x600.jpg',
 };
 
 function HomeScreen() {
+  const {navigationReset} = useNavigationReset();
+
   const listCard = useMemo(
     () => [
       {
@@ -83,6 +86,7 @@ function HomeScreen() {
           title="Đặt món ngay"
           type="secondary"
           style={styles.buttonOrder}
+          onPress={() => navigationReset('ListFoodScreen')}
         />
       </Animated.View>
 

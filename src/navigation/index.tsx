@@ -10,6 +10,7 @@ import HomeScreen from '@app/src/screens/HomeScreen';
 import StatisticalScreen from '../screens/StatisticalScreen';
 import {themeColor} from '../config/color';
 import OrderScreen from '../screens/OrderScreen';
+import {EBottomTabName} from './type';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +39,8 @@ function AppNavigation() {
 
   return (
     <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator initialRouteName={true ? 'ListFoodScreen' : 'Login'}>
+      <Stack.Navigator
+        initialRouteName={true ? EBottomTabName.HomeScreen : 'Login'}>
         {/* Bottom Navigation */}
         <Stack.Screen
           name="HomeScreen"

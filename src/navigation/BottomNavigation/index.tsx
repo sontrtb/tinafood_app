@@ -1,8 +1,9 @@
 import TouchableGlobal from '@app/src/components/globals/TouchableGlobal';
 import {themeColor} from '@app/src/config/color';
 import {HEIGHT_BOTTOM_BAR} from '@app/src/config/layout';
+import {useFocusBottomTab} from '@app/src/redux/FocusBottomTab/hooks';
 import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
-import React, {memo, useMemo, useState} from 'react';
+import React, {memo, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Animated, {
   Easing,
@@ -12,59 +13,84 @@ import Animated, {
 } from 'react-native-reanimated';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import {EBottomTabName} from '../type';
 
 function BottomNavigation() {
   const {navigationReset} = useNavigationReset();
 
-  const [focus, setFocus] = useState('HomeScreen');
+  const focus = useFocusBottomTab();
 
   const translateXFocus = useSharedValue(-18);
 
   const listBottomNavigation = useMemo(
     () => [
       {
-        routeName: 'HomeScreen',
+        routeName: EBottomTabName.HomeScreen,
         icon: (
           <IconAntDesign
             name="home"
             size={25}
-            color={focus === 'HomeScreen' ? '#fff' : themeColor.disable}
+            color={
+              focus === EBottomTabName.HomeScreen ? '#fff' : themeColor.disable
+            }
           />
         ),
       },
       {
-        routeName: 'ListFoodScreen',
+        routeName: EBottomTabName.ListFoodScreen,
         icon: (
           <IconAntDesign
             name="bars"
             size={25}
-            color={focus === 'ListFoodScreen' ? '#fff' : themeColor.disable}
+            color={
+              focus === EBottomTabName.ListFoodScreen
+                ? '#fff'
+                : themeColor.disable
+            }
           />
         ),
       },
       {
-        routeName: 'StatisticalScreen',
+        routeName: EBottomTabName.StatisticalScreen,
         icon: (
           <IconAntDesign
             name="table"
             size={25}
-            color={focus === 'StatisticalScreen' ? '#fff' : themeColor.disable}
+            color={
+              focus === EBottomTabName.StatisticalScreen
+                ? '#fff'
+                : themeColor.disable
+            }
           />
         ),
       },
       {
-        routeName: 'UserScreen',
+        routeName: EBottomTabName.UserScreen,
         icon: (
           <IconFontAwesome
             name="user"
             size={25}
-            color={focus === 'UserScreen' ? '#fff' : themeColor.disable}
+            color={
+              focus === EBottomTabName.UserScreen ? '#fff' : themeColor.disable
+            }
           />
         ),
       },
     ],
     [focus],
   );
+
+  useEffect(() => {
+    listBottomNavigation.forEach((bottom, index) => {
+      if (bottom.routeName === focus) {
+        translateXFocus.value = withTiming(index * 90 - 18, {
+          duration: 500,
+          easing: Easing.elastic(1.2),
+        });
+        return;
+      }
+    });
+  }, [focus, listBottomNavigation, translateXFocus]);
 
   const backgroundFocusStyles = useAnimatedStyle(() => {
     return {
@@ -81,11 +107,6 @@ function BottomNavigation() {
             style={styles.navigationItem}
             onPress={() => {
               navigationReset(navigationItem.routeName);
-              setFocus(navigationItem.routeName);
-              translateXFocus.value = withTiming(index * 90 - 18, {
-                duration: 500,
-                easing: Easing.elastic(1.2),
-              });
             }}>
             {navigationItem.icon}
           </TouchableGlobal>
