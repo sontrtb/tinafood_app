@@ -8,9 +8,7 @@ export const deviceHeight = Dimensions.get('screen').height;
 
 export const deviceWidth = Dimensions.get('screen').width;
 
-export const windowHeightStatusBar = (): number => {
-  return StatusBar.currentHeight || 24;
-};
+export const windowHeightStatusBar = StatusBar.currentHeight || 40;
 
 export const windowHeightByPercentage = (percentage: number): number => {
   return Dimensions.get('window').width * percentage;

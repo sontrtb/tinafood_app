@@ -43,7 +43,7 @@ function AppNavigation() {
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
-          options={{animation: 'none'}}
+          options={{animation: 'none', headerShown: false}}
         />
         <Stack.Screen
           name="ListFoodScreen"
