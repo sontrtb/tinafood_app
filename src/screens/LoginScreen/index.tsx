@@ -2,7 +2,6 @@ import ButtonGlobal from '@app/src/components/globals/ButtonGlobal';
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {paddingHorizontal} from '@app/src/config/layout';
-import {useNavigation} from '@react-navigation/native';
 import TextInputGlobal from '@app/src/components/globals/TextInputGlobal';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {themeColor} from '@app/src/config/color';
@@ -10,9 +9,11 @@ import {ILoginBody, login} from '@app/src/api/apiAuth';
 import {useMutation} from 'react-query';
 import {useAppDispatch} from '@app/src/redux/hook';
 import {setToken} from '@app/src/redux/Auth/slice';
+import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
+import {EBottomTabName} from '@app/src/navigation/type';
 
 function LoginScreen() {
-  const naviagtionn = useNavigation();
+  const {navigationReset} = useNavigationReset();
 
   const dispatch = useAppDispatch();
 
@@ -28,7 +29,7 @@ function LoginScreen() {
         dispatch(
           setToken({token: res.accessToken, refreshToken: res.refreshToken}),
         );
-        naviagtionn.navigate('HomeScreen');
+        navigationReset(EBottomTabName.HomeScreen);
       },
     });
   };

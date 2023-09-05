@@ -53,17 +53,17 @@ function AppNavigation() {
         <Stack.Screen
           name="ListFoodScreen"
           component={ListFoodScreen}
-          options={{animation: 'none'}}
+          options={{animation: 'none', title: 'Danh sách món'}}
         />
         <Stack.Screen
           name="UserScreen"
           component={UserScreen}
-          options={{animation: 'none'}}
+          options={{animation: 'none', headerShown: false}}
         />
         <Stack.Screen
           name="StatisticalScreen"
           component={StatisticalScreen}
-          options={{animation: 'none'}}
+          options={{animation: 'none', title: 'Danh sách đặt'}}
         />
 
         {/* Navigation */}

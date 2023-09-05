@@ -10,7 +10,7 @@ const authTabSlice = createSlice({
   initialState: initState,
   reducers: {
     setToken: (state, action: PayloadAction<IAuth>) => {
-      return {...state, name: action.payload.token};
+      return {...state, token: action.payload.token};
     },
     clearToken: state => {
       return {...state, token: undefined};

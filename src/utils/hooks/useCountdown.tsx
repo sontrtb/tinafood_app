@@ -5,10 +5,9 @@ function useCountdown() {
   const [isRun, setIsRun] = useState(true);
 
   useEffect(() => {
-    const now = new Date().getTime();
-    const countDownDate = new Date().setHours(11, 0, 0);
-
     const countDownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const countDownDate = new Date().setHours(11, 0, 0);
       const distance = countDownDate - now;
 
       const hours = Math.floor(

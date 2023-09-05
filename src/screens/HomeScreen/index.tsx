@@ -1,4 +1,4 @@
-import React, {Fragment, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {themeColor} from '@app/src/config/color';
 import {paddingHorizontal} from '@app/src/config/layout';
 import {
@@ -16,6 +16,8 @@ import Countdown from './components/Countdown';
 import Animated, {BounceIn, BounceOut} from 'react-native-reanimated';
 import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
 import {EBottomTabName} from '@app/src/navigation/type';
+import {handleRecharge} from '@app/src/utils/action/recharge';
+import TouchableGlobal from '@app/src/components/globals/TouchableGlobal';
 
 const image = {
   uri: 'https://haycafe.vn/wp-content/uploads/2022/02/Anh-gai-xinh-de-thuong-577x600.jpg',
@@ -35,6 +37,7 @@ function HomeScreen() {
             color={themeColor.secondaryText}
           />
         ),
+        onPress: handleRecharge,
       },
       {
         name: 'Ủng hộ admin',
@@ -45,6 +48,7 @@ function HomeScreen() {
             color={themeColor.secondaryText}
           />
         ),
+        onPress: handleRecharge,
       },
       {
         name: 'Nạp tiền',
@@ -55,6 +59,7 @@ function HomeScreen() {
             color={themeColor.secondaryText}
           />
         ),
+        onPress: handleRecharge,
       },
       {
         name: 'Nạp tiền',
@@ -65,6 +70,7 @@ function HomeScreen() {
             color={themeColor.secondaryText}
           />
         ),
+        onPress: handleRecharge,
       },
     ],
     [],
@@ -94,12 +100,12 @@ function HomeScreen() {
       <View style={styles.content}>
         <View style={styles.cardWrap}>
           {listCard.map((card, index) => (
-            <Fragment key={index}>
+            <TouchableGlobal key={index} onPress={card.onPress}>
               <BackgroundCard>
                 {card.icon}
                 <Text style={styles.textCard}>{card.name}</Text>
               </BackgroundCard>
-            </Fragment>
+            </TouchableGlobal>
           ))}
         </View>
 

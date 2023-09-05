@@ -41,11 +41,12 @@ const styles = StyleSheet.create({
     color: themeColor.secondaryMain,
   },
   textTime: {
+    textAlign: 'right',
     fontWeight: '700',
     fontSize: 28,
     marginLeft: 10,
     color: themeColor.main,
-    width: windowWidth - 100,
+    maxWidth: windowWidth - 100,
   },
 });
 

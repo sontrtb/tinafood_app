@@ -1,4 +1,3 @@
-import TouchableGlobal from '@app/src/components/globals/TouchableGlobal';
 import {themeColor} from '@app/src/config/color';
 import {paddingHorizontal} from '@app/src/config/layout';
 import {windowWidth} from '@app/src/utils/layout';
@@ -30,7 +29,7 @@ function BackgroundCard({children}: IBackgroundCardProps) {
           />
         </RoundedRect>
       </Canvas>
-      <TouchableGlobal style={styles.cardContent}>{children}</TouchableGlobal>
+      <View style={styles.cardContent}>{children}</View>
     </View>
   );
 }
