@@ -7,11 +7,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {useNavigation} from '@react-navigation/native';
-import {ISampleImages} from '@app/src/data/images';
 import {themeColor} from '@app/src/config/color';
+import {IFood} from '@app/src/api/apiFood';
 
 interface IFoodCardProps {
-  item: ISampleImages;
+  item: IFood;
   viewableItemsVal: SharedValue<ViewToken[]>;
 }
 
@@ -38,17 +38,17 @@ function FoodCard(props: IFoodCardProps) {
         <Animated.Image
           style={styles.image}
           source={{
-            uri: item.uri,
+            uri: `https://generatorfun.com/code/uploads/Random-Food-image-${item.id}.jpg`,
           }}
           sharedTransitionTag={`image_food_${item.id}`}
         />
 
         <View style={styles.content}>
           <View>
-            <Text style={styles.name}>Cơm 30</Text>
+            <Text style={styles.name}>{item.displayName}</Text>
             <Text style={styles.des}>Đặt anh Hiệp</Text>
           </View>
-          <Text style={styles.price}>30.000đ</Text>
+          <Text style={styles.price}>{item.price}.000đ</Text>
         </View>
       </TouchableGlobal>
     </Animated.View>

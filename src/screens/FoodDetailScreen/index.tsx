@@ -19,7 +19,7 @@ function FoodDetailScreen() {
       <Animated.Image
         style={styles.image}
         source={{
-          uri: params.uri,
+          uri: `https://generatorfun.com/code/uploads/Random-Food-image-${params.id}.jpg`,
         }}
         sharedTransitionTag={`image_food_${params.id}`}
       />
@@ -34,15 +34,15 @@ function FoodDetailScreen() {
         exiting={FadeInDown}
         style={styles.content}>
         <View>
-          <Text style={styles.name}>Bún bò</Text>
+          <Text style={styles.name}>{params.displayName}</Text>
           <Text style={styles.price}>
             <IconEntypo name="credit" size={18} />
-            30.000
+            {params.price}.000đ
           </Text>
 
           <Text style={styles.des}>
-            BÙNG HẢO VỊ - CHIẾN HẢO GAME 👈 HẢO HẢO CHÍNH THỨC LÀ NHÀ TÀI TRỢ
-            CỦA GIẢI ĐẤU TRƯỜNG DANH VỌNG MÙA ĐÔNG 2023 🔥
+            Món ăn ngon chỉ có trên TinaFood 👈. Bữa cơm cả công ty thích thú,
+            thực đơn đa dạng, hấp dẫn.
           </Text>
         </View>
 

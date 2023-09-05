@@ -32,15 +32,15 @@ function OrderScreen() {
           <Animated.Image
             style={styles.image}
             source={{
-              uri: params.uri,
+              uri: `https://generatorfun.com/code/uploads/Random-Food-image-${params.id}.jpg`,
             }}
             sharedTransitionTag={`image_food_${params.id}`}
           />
           <View>
-            <Text style={styles.name}>Bún bò</Text>
+            <Text style={styles.name}>{params.displayName}</Text>
             <Text style={styles.price}>
               <IconEntypo name="credit" size={14} />
-              30.000
+              {params.price}.000
             </Text>
           </View>
         </View>

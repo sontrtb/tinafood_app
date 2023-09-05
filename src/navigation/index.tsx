@@ -2,7 +2,6 @@ import React from 'react';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import BottomNavigation from './BottomNavigation';
 import FoodDetailScreen from '@app/src/screens/FoodDetailScreen';
-import {ISampleImages} from '../data/images';
 import ListFoodScreen from '@app/src/screens/ListFoodScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import UserScreen from '@app/src/screens/UserScreen';
@@ -10,7 +9,9 @@ import HomeScreen from '@app/src/screens/HomeScreen';
 import StatisticalScreen from '../screens/StatisticalScreen';
 import {themeColor} from '../config/color';
 import OrderScreen from '../screens/OrderScreen';
-import {EBottomTabName} from './type';
+import LoginScreen from '../screens/LoginScreen';
+import {useIsLogin} from '../redux/Auth/hooks';
+import {IFood} from '../api/apiFood';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,8 +19,9 @@ export type AppRootParamList = {
   ListFoodScreen: undefined;
   HomeScreen: undefined;
 
-  FoodDetailScreen: ISampleImages;
-  OrderScreen: ISampleImages;
+  FoodDetailScreen: IFood;
+  OrderScreen: IFood;
+  LoginScreen: undefined;
 };
 
 declare global {
@@ -37,10 +39,11 @@ function AppNavigation() {
     },
   };
 
+  const isLogin = useIsLogin();
+
   return (
     <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        initialRouteName={true ? EBottomTabName.HomeScreen : 'Login'}>
+      <Stack.Navigator initialRouteName={isLogin ? 'HomeScreen' : 'Login'}>
         {/* Bottom Navigation */}
         <Stack.Screen
           name="HomeScreen"
@@ -79,6 +82,14 @@ function AppNavigation() {
           options={{
             title: 'Đặt món',
             headerBackTitleVisible: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
             animation: 'fade',
           }}
         />
