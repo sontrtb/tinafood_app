@@ -12,6 +12,11 @@ import OrderScreen from '../screens/OrderScreen';
 import LoginScreen from '../screens/LoginScreen';
 import {useIsLogin} from '../redux/Auth/hooks';
 import {IFood} from '../api/apiFood';
+import {useQuery} from 'react-query';
+import {queryKey} from '../api/queryKey';
+import {getMe} from '../api/apiUser';
+import {useAppDispatch} from '../redux/hook';
+import {setUser} from '../redux/User/slice';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +36,8 @@ declare global {
 }
 
 function AppNavigation() {
+  const dispatch = useAppDispatch();
+
   const MyTheme = {
     ...DefaultTheme,
     colors: {
@@ -41,9 +48,17 @@ function AppNavigation() {
 
   const isLogin = useIsLogin();
 
+  useQuery(queryKey.ME, getMe, {
+    enabled: isLogin,
+    onSuccess: res => {
+      dispatch(setUser(res));
+    },
+  });
+
   return (
     <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator initialRouteName={isLogin ? 'HomeScreen' : 'Login'}>
+      <Stack.Navigator
+        initialRouteName={isLogin ? 'HomeScreen' : 'LoginScreen'}>
         {/* Bottom Navigation */}
         <Stack.Screen
           name="HomeScreen"

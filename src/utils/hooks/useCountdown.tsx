@@ -1,13 +1,16 @@
 import {useEffect, useState} from 'react';
+import getSession from '../action/getSession';
 
 function useCountdown() {
   const [timeCountdown, setTimeCountdown] = useState('--:--:--');
   const [isRun, setIsRun] = useState(true);
 
+  const hoursEnd = getSession() === 1 ? 11 : 19;
+
   useEffect(() => {
     const countDownInterval = setInterval(() => {
       const now = new Date().getTime();
-      const countDownDate = new Date().setHours(11, 0, 0);
+      const countDownDate = new Date().setHours(hoursEnd, 0, 0);
       const distance = countDownDate - now;
 
       const hours = Math.floor(
@@ -26,7 +29,7 @@ function useCountdown() {
     }, 1000);
 
     return () => clearInterval(countDownInterval);
-  }, []);
+  }, [hoursEnd]);
 
   return {
     timeCountdown: timeCountdown,

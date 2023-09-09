@@ -8,21 +8,51 @@ import FastImage from 'react-native-fast-image';
 import Animated from 'react-native-reanimated';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import {styles} from './styles';
-import {roomList, tipList} from './data';
+import {ITip, roomList, tipList} from './data';
 import ButtonGlobal from '@app/src/components/globals/ButtonGlobal';
 import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
 import {EBottomTabName} from '@app/src/navigation/type';
+import {useMutation} from 'react-query';
+import {createBooking} from '@app/src/api/apiBooking';
+import getSession from '@app/src/utils/action/getSession';
+import {showToast} from '@app/src/utils/toats';
 
 function OrderScreen() {
   const {params} = useRoute<RouteProp<AppRootParamList, 'OrderScreen'>>();
 
   const {navigationReset} = useNavigationReset();
 
-  const [roomId, setRoomId] = useState(1);
-  const [tipId, setTipId] = useState<number>();
+  const [roomSelect, setRoom] = useState(roomList[0]);
+  const [tipSelect, setTip] = useState<ITip>();
 
+  const createBookingMutation = useMutation(createBooking);
   const handleOrder = () => {
-    navigationReset(EBottomTabName.HomeScreen);
+    if (!params.id || !params.price) {
+      showToast('Có lỗi xảy ra');
+      return;
+    }
+    console.log('sdsd', {
+      session: getSession() === 1 ? 'Lunch' : 'Dinner',
+      room: roomSelect.name,
+      foodId: params.id,
+      price: params.price,
+      tip: tipSelect?.value ?? 0,
+    });
+    createBookingMutation.mutate(
+      {
+        session: getSession() === 1 ? 'Lunch' : 'Dinner',
+        room: roomSelect.value,
+        foodId: params.id,
+        price: params.price,
+        tip: tipSelect?.value ?? 0,
+      },
+      {
+        onSuccess: () => {
+          showToast(`Bạn đã đặt: ${params.displayName} thành công`);
+          navigationReset(EBottomTabName.HomeScreen);
+        },
+      },
+    );
   };
 
   return (
@@ -55,10 +85,12 @@ function OrderScreen() {
                   styles.room,
                   {
                     borderColor:
-                      roomId === room.id ? themeColor.main : themeColor.border,
+                      roomSelect.id === room.id
+                        ? themeColor.main
+                        : themeColor.border,
                   },
                 ]}
-                onPress={() => setRoomId(room.id)}>
+                onPress={() => setRoom(room)}>
                 <FastImage
                   style={styles.imageRoom}
                   source={{
@@ -80,10 +112,11 @@ function OrderScreen() {
                   styles.tip,
                   {
                     backgroundColor: tip.color,
-                    borderColor: tipId === tip.id ? themeColor.main : tip.color,
+                    borderColor:
+                      tipSelect?.id === tip.id ? themeColor.main : tip.color,
                   },
                 ]}
-                onPress={() => setTipId(tip.id)}>
+                onPress={() => setTip(tip)}>
                 <Text style={styles.tipText}>{tip.name}</Text>
               </TouchableGlobal>
             ))}

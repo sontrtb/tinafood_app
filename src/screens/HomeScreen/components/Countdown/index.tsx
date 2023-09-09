@@ -1,12 +1,25 @@
 import {themeColor} from '@app/src/config/color';
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import useCountdown from '@app/src/utils/hooks/useCountdown';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {windowWidth} from '@app/src/utils/layout';
 
-function Countdown() {
+interface ICountdownProps {
+  userChoose?: string;
+  refetch: () => void;
+}
+
+function Countdown(props: ICountdownProps) {
+  const {userChoose, refetch} = props;
+
   const {timeCountdown, isRun} = useCountdown();
+
+  useEffect(() => {
+    if (!isRun) {
+      refetch();
+    }
+  }, [isRun, refetch]);
 
   return (
     <View style={styles.root}>
@@ -14,7 +27,7 @@ function Countdown() {
       <View style={styles.time}>
         {!isRun && <IconFontAwesome5 name="crown" size={28} color="#fde047" />}
         <Text style={styles.textTime} numberOfLines={1}>
-          {isRun ? timeCountdown : 'Phạm Hồng Sơn'}
+          {isRun ? timeCountdown : userChoose}
         </Text>
       </View>
     </View>

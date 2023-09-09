@@ -58,9 +58,9 @@ function FoodCard(props: IFoodCardProps) {
 const styles = StyleSheet.create({
   root: {
     marginTop: 15,
-    backgroundColor: '#fff',
     borderRadius: 20,
     marginHorizontal: 5,
+    backgroundColor: themeColor.main,
 
     shadowColor: 'rgba(0,0,0,0.3)',
     shadowOffset: {
@@ -74,18 +74,16 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 230,
+    height: 200,
     borderRadius: 10,
   },
   content: {
-    position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: themeColor.main,
+
     padding: 10,
     width: '100%',
-    bottom: 0,
     borderBottomLeftRadius: 9,
     borderBottomRightRadius: 9,
     borderTopLeftRadius: 20,

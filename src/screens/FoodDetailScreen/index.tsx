@@ -6,7 +6,7 @@ import {windowHeight} from '@app/src/utils/layout';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Animated, {FadeInDown} from 'react-native-reanimated';
+import Animated, {SlideInDown, SlideOutDown} from 'react-native-reanimated';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 
 function FoodDetailScreen() {
@@ -30,8 +30,8 @@ function FoodDetailScreen() {
       </View>
 
       <Animated.View
-        entering={FadeInDown}
-        exiting={FadeInDown}
+        entering={SlideInDown}
+        exiting={SlideOutDown}
         style={styles.content}>
         <View>
           <Text style={styles.name}>{params.displayName}</Text>
@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    backgroundColor: themeColor.main,
   },
   image: {
     width: '100%',
-    height: windowHeight * 0.45,
+    height: windowHeight * 0.4,
   },
   textNoteWrap: {
     position: 'absolute',
@@ -80,14 +80,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   content: {
-    position: 'absolute',
-    bottom: 0,
-    height: windowHeight * 0.45,
-    width: '100%',
+    flex: 1,
     justifyContent: 'space-between',
-    backgroundColor: themeColor.main,
     paddingHorizontal: paddingHorizontal,
-    paddingTop: 25,
+    paddingTop: paddingHorizontal,
     paddingBottom: 15,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,

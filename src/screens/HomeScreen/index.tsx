@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {themeColor} from '@app/src/config/color';
 import {paddingHorizontal} from '@app/src/config/layout';
 import {
@@ -18,13 +18,49 @@ import useNavigationReset from '@app/src/utils/hooks/useNavigationReset';
 import {EBottomTabName} from '@app/src/navigation/type';
 import {handleRecharge} from '@app/src/utils/action/recharge';
 import TouchableGlobal from '@app/src/components/globals/TouchableGlobal';
+import {getListBooking} from '@app/src/api/apiBooking';
+import {useQuery} from 'react-query';
+import moment from 'moment';
+import {queryKey} from '@app/src/api/queryKey';
+import {useUser} from '@app/src/redux/User/hooks';
+import getSession from '@app/src/utils/action/getSession';
 
-const image = {
-  uri: 'https://haycafe.vn/wp-content/uploads/2022/02/Anh-gai-xinh-de-thuong-577x600.jpg',
-};
+const image = require('@app/src/assets/image/order_now.jpeg');
 
 function HomeScreen() {
   const {navigationReset} = useNavigationReset();
+
+  const user = useUser();
+
+  const params = {
+    bookDate: moment().format('YYYY-MM-DD'),
+    session: getSession(),
+  };
+  const getDataListBooking = () => getListBooking(params);
+  const {data, refetch} = useQuery(
+    [queryKey.LIST_BOOKING, params],
+    getDataListBooking,
+  );
+
+  const dataConvert = useMemo(() => {
+    const userChoose =
+      data?.find(item => item.isChosen)?.createdBy?.username ?? '-----';
+    const myFood = data?.find(
+      item => item.createdBy?.username === user.username,
+    )?.food;
+
+    return {
+      userChoose: userChoose,
+      myFood: myFood,
+    };
+  }, [data, user.username]);
+
+  const handleOrderNow = useCallback(() => {
+    if (dataConvert.myFood) {
+    } else {
+      navigationReset(EBottomTabName.ListFoodScreen);
+    }
+  }, [dataConvert.myFood, navigationReset]);
 
   const listCard = useMemo(
     () => [
@@ -79,7 +115,13 @@ function HomeScreen() {
   return (
     <ScrollView style={styles.root}>
       <ImageBackground
-        source={image}
+        source={
+          dataConvert.myFood
+            ? {
+                uri: `https://generatorfun.com/code/uploads/Random-Food-image-${dataConvert.myFood?.id}.jpg`,
+              }
+            : image
+        }
         resizeMode="cover"
         style={styles.imageBackground}>
         <Text style={styles.logo}>TinaFood</Text>
@@ -90,10 +132,14 @@ function HomeScreen() {
         entering={BounceIn}
         exiting={BounceOut}>
         <ButtonGlobal
-          title="Đặt món ngay"
+          title={
+            dataConvert.myFood
+              ? `Bạn đã đặt: ${dataConvert.myFood.displayName}`
+              : 'Đặt món ngay'
+          }
           type="secondary"
           style={styles.buttonOrder}
-          onPress={() => navigationReset(EBottomTabName.ListFoodScreen)}
+          onPress={handleOrderNow}
         />
       </Animated.View>
 
@@ -109,7 +155,7 @@ function HomeScreen() {
           ))}
         </View>
 
-        <Countdown />
+        <Countdown userChoose={dataConvert.userChoose} refetch={refetch} />
       </View>
     </ScrollView>
   );

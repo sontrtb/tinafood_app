@@ -14,11 +14,20 @@ import Animated, {
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import {EBottomTabName} from '../type';
+import {useIsLogin} from '@app/src/redux/Auth/hooks';
+
+const arrBottom = [
+  EBottomTabName.HomeScreen,
+  EBottomTabName.ListFoodScreen,
+  EBottomTabName.StatisticalScreen,
+  EBottomTabName.UserScreen,
+];
 
 function BottomNavigation() {
   const {navigationReset} = useNavigationReset();
 
   const focus = useFocusBottomTab();
+  const isLogin = useIsLogin();
 
   const translateXFocus = useSharedValue(-18);
 
@@ -97,6 +106,10 @@ function BottomNavigation() {
       transform: [{translateX: translateXFocus.value}],
     };
   });
+
+  if (!arrBottom.includes(focus) || !isLogin) {
+    return null;
+  }
 
   return (
     <View style={styles.root}>
